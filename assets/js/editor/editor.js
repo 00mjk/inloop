@@ -1,15 +1,18 @@
 // Load data attributes, which are rendered into the script tag
 const script = document.getElementById("editor-script");
-const SAVE_CHECKPOINT_URL = script.getAttribute("data-save-checkpoint-url");
-const GET_LAST_CHECKPOINT_URL = script.getAttribute("data-get-last-checkpoint-url");
 const CSRF_TOKEN = script.getAttribute("data-csrf-token");
-const SOLUTIONS_EDITOR_URL = script.getAttribute("data-solutions-editor-url");
-const SOLUTIONS_LIST_URL = script.getAttribute("data-solutions-list-url");
-const SYNTAX_CHECK_URL = script.getAttribute("data-syntax-check-url");
 
 const CURRENT_SUBMITS_DATA_KEY = "data-current-submissions";
 const MAX_SUBMITS_DATA_KEY = "data-submission-limit";
 const NO_SUBMISSION_LIMIT = -1;
+
+const urls = {
+  SOLUTIONS_EDITOR: script.getAttribute("data-solutions-editor-url"),
+  SOLUTIONS_LIST: script.getAttribute("data-solutions-list-url"),
+  SYNTAX_CHECK: script.getAttribute("data-syntax-check-url"),
+  SAVE_CHECKPOINT: script.getAttribute("data-save-checkpoint-url"),
+  GET_LAST_CHECKPOINT: script.getAttribute("data-get-last-checkpoint-url")
+}
 
 const htmlIds ={
   EDITOR_TABBAR_FILES: "editor-tabbar-files",
@@ -563,7 +566,7 @@ class Communicator {
    * If request fails, alert is shown and nothin is returned.
    */
   async getLastCheckpoint() {
-    const response = await fetch(GET_LAST_CHECKPOINT_URL);
+    const response = await fetch(urls.GET_LAST_CHECKPOINT);
     if (response.status !== 200) {
       alert(getString(msgs.error_loading_files));
     } else {
@@ -593,7 +596,7 @@ class Communicator {
       body: JSON.stringify(payload),
     };
     let errorMsg = "";
-    const response = await fetch(SAVE_CHECKPOINT_URL, requestConfig).catch(
+    const response = await fetch(urls.SAVE_CHECKPOINT, requestConfig).catch(
       (error) => (errorMsg = error)
     );
     if (!response.status || response.status !== 200) {
@@ -642,7 +645,7 @@ class Communicator {
       body: JSON.stringify(payload),
     };
     let errorMsg = "";
-    const response = await fetch(SOLUTIONS_EDITOR_URL, requestConfig).catch(
+    const response = await fetch(urls.SOLUTIONS_EDITOR, requestConfig).catch(
       (error) => (errorMsg = error)
     );
     if (!response.status || response.status !== 200) {
@@ -655,7 +658,7 @@ class Communicator {
   }
 
   async checkSyntax() {
-    if (!SYNTAX_CHECK_URL) return;
+    if (!urls.SYNTAX_CHECK) return;
     const payload = {
       files: fileBuilder.files.map((file) => {
         return { name: file.fileName, contents: file.fileContent };
@@ -668,7 +671,7 @@ class Communicator {
       },
       body: JSON.stringify(payload),
     };
-    const response = await fetch(SYNTAX_CHECK_URL, requestConfig);
+    const response = await fetch(urls.SYNTAX_CHECK, requestConfig);
     if (response.status !== 200) {
       showAlert(getString(msgs.error_checking_syntax));
       return;
@@ -813,7 +816,7 @@ class Toolbar {
         if (result.skip_redirect && result.num_submissions && result.submission_limit) {
           this.updateSubmitButton(result.num_submissions, result.submission_limit);
         } else {
-          window.location.assign(SOLUTIONS_LIST_URL);
+          window.location.assign(urls.SOLUTIONS_LIST);
         }
       } else {
         showAlert(getString(msgs.error_submit, result.reason || msgs.error_unknown));
