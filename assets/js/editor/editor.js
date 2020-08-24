@@ -6,26 +6,30 @@ const CSRF_TOKEN = script.getAttribute("data-csrf-token");
 const SOLUTIONS_EDITOR_URL = script.getAttribute("data-solutions-editor-url");
 const SOLUTIONS_LIST_URL = script.getAttribute("data-solutions-list-url");
 const SYNTAX_CHECK_URL = script.getAttribute("data-syntax-check-url");
-const EDITOR_TABBAR_FILES_ID = "editor-tabbar-files";
-const EDITOR_ID = "editor-content";
-const BTN_SAVE_ID = "toolbar-btn--save";
-const BTN_ADD_FILE_ID = "toolbar-btn--newfile";
-const BTN_SUBMIT_ID = "toolbar-btn--submit";
-const BTN_RENAME_FILE_ID = "editor-tabbar-btn--rename";
-const BTN_DELETE_FILE_ID = "editor-tabbar-btn--delete";
-const BTN_SYNTAX_ID = "toolbar-btn--syntax";
-const BTN_SWITCH_TO_EDITOR = "toolbar-switch-btn--editor";
-const BTN_SWITCH_TO_UPLOAD = "toolbar-switch-btn--manual";
-const DEADLINE_ID = "task-deadline";
-const MANUAL_UPLOAD_INPUT_ID = "manual-upload-file-input";
-const MANUAL_UPLOAD_FORM_ID = "manual-upload-form";
-const TOOLBAR_BUTTONS_RIGHT_ID = "toolbar-buttons--right";
-const CONSOLE_CONTAINER_ID = "console";
-const CONSOLE_CONTENT_ID = "console-content";
-const CONSOLE_HIDE_BUTTON_ID = "console-btn--hide";
+
 const CURRENT_SUBMITS_DATA_KEY = "data-current-submissions";
 const MAX_SUBMITS_DATA_KEY = "data-submission-limit";
 const NO_SUBMISSION_LIMIT = -1;
+
+const htmlIds ={
+  EDITOR_TABBAR_FILES: "editor-tabbar-files",
+  EDITOR: "editor-content",
+  BTN_SAVE: "toolbar-btn--save",
+  BTN_ADD_FILE: "toolbar-btn--newfile",
+  BTN_SUBMIT: "toolbar-btn--submit",
+  BTN_RENAME_FILE: "editor-tabbar-btn--rename",
+  BTN_DELETE_FILE: "editor-tabbar-btn--delete",
+  BTN_SYNTAX: "toolbar-btn--syntax",
+  BTN_SWITCH_TO_EDITOR: "toolbar-switch-btn--editor",
+  BTN_SWITCH_TO_UPLOAD: "toolbar-switch-btn--manual",
+  DEADLINE: "task-deadline",
+  MANUAL_UPLOAD_INPUT: "manual-upload-file-input",
+  MANUAL_UPLOAD_FORM: "manual-upload-form",
+  TOOLBAR_BUTTONS_RIGHT: "toolbar-buttons--right",
+  CONSOLE_CONTAINER: "console",
+  CONSOLE_CONTENT: "console-content",
+  CONSOLE_HIDE_BUTTON: "console-btn--hide"
+}
 
 const msgs = {
   try_again_later: "Please try again later.",
@@ -84,7 +88,7 @@ class Tab {
   constructor(tabId, file) {
     this.tabId = tabId;
     this.file = file;
-    this.tabListContainer = document.getElementById(EDITOR_TABBAR_FILES_ID);
+    this.tabListContainer = document.getElementById(htmlIds.EDITOR_TABBAR_FILES);
   }
 
   /**
@@ -286,8 +290,8 @@ class TabBar {
     this.editor.addOnChangeListener(function () {
       hashComparator.lookForChanges(fileBuilder.files);
     });
-    this.renameFileButton = document.getElementById(BTN_RENAME_FILE_ID);
-    this.deleteFileButton = document.getElementById(BTN_DELETE_FILE_ID);
+    this.renameFileButton = document.getElementById(htmlIds.BTN_RENAME_FILE);
+    this.deleteFileButton = document.getElementById(htmlIds.BTN_DELETE_FILE);
     this.renameFileButton.addEventListener("click", () => this.renameFile());
     this.deleteFileButton.addEventListener("click", () => this.deleteFile());
     for (let file of files) {
@@ -486,7 +490,7 @@ class InloopEditor {
    * @constructor
    */
   constructor() {
-    this.editor = ace.edit(EDITOR_ID);
+    this.editor = ace.edit(htmlIds.EDITOR);
     if (this.editor === undefined) {
       return;
     }
@@ -538,7 +542,7 @@ class InloopEditor {
   }
 
   focus() {
-    document.querySelector(`#${EDITOR_ID} > textarea`).focus();
+    document.querySelector(`#${htmlIds.EDITOR} > textarea`).focus();
   }
 }
 
@@ -675,9 +679,9 @@ class Communicator {
 
 class SyntaxCheckConsole {
   constructor() {
-    this.consoleContainerElement = document.getElementById(CONSOLE_CONTAINER_ID);
-    this.consoleContentElement = document.getElementById(CONSOLE_CONTENT_ID);
-    this.consoleHideBtn = document.getElementById(CONSOLE_HIDE_BUTTON_ID);
+    this.consoleContainerElement = document.getElementById(htmlIds.CONSOLE_CONTAINER);
+    this.consoleContentElement = document.getElementById(htmlIds.CONSOLE_CONTENT);
+    this.consoleHideBtn = document.getElementById(htmlIds.CONSOLE_HIDE_BUTTON);
     this.consoleHideBtn.addEventListener("click", () => this.show(false));
   }
 
@@ -888,26 +892,26 @@ class Toolbar {
     this.switchToUploadButton.disabled = isEditor;
     document.getElementById("manual-upload").style.display = isEditor ? "flex" : "none";
     document.getElementById("editor").style.display = isEditor ? "none" : "flex";
-    document.getElementById(TOOLBAR_BUTTONS_RIGHT_ID).style.display = isEditor ? "none" : "block";
+    document.getElementById(htmlIds.TOOLBAR_BUTTONS_RIGHT).style.display = isEditor ? "none" : "block";
     if (!isEditor) tabBar.editor.focus();
   }
 }
 
 function init() {
-  const uploadInputElement = document.getElementById(MANUAL_UPLOAD_INPUT_ID);
+  const uploadInputElement = document.getElementById(htmlIds.MANUAL_UPLOAD_INPUT);
   uploadInputElement &&
     uploadInputElement.addEventListener("change", function () {
-      document.getElementById(MANUAL_UPLOAD_FORM_ID).submit();
+      document.getElementById(htmlIds.MANUAL_UPLOAD_FORM).submit();
     });
 
   toolbar = new Toolbar(
-    DEADLINE_ID,
-    BTN_SAVE_ID,
-    BTN_ADD_FILE_ID,
-    BTN_SUBMIT_ID,
-    BTN_SYNTAX_ID,
-    BTN_SWITCH_TO_EDITOR,
-    BTN_SWITCH_TO_UPLOAD
+    htmlIds.DEADLINE,
+    htmlIds.BTN_SAVE,
+    htmlIds.BTN_ADD_FILE,
+    htmlIds.BTN_SUBMIT,
+    htmlIds.BTN_SYNTAX,
+    htmlIds.BTN_SWITCH_TO_EDITOR,
+    htmlIds.BTN_SWITCH_TO_UPLOAD
   );
   toolbar.init();
   communicator.getLastCheckpoint().then((data) => {
