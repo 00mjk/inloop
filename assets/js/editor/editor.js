@@ -1,7 +1,6 @@
 // Load data attributes, which are rendered into the script tag
 const script = document.getElementById("editor-script");
 const CSRF_TOKEN = script.getAttribute("data-csrf-token");
-
 const CURRENT_SUBMITS_DATA_KEY = "data-current-submissions";
 const MAX_SUBMITS_DATA_KEY = "data-submission-limit";
 const NO_SUBMISSION_LIMIT = -1;
@@ -11,12 +10,13 @@ const urls = {
   SOLUTIONS_LIST: script.getAttribute("data-solutions-list-url"),
   SYNTAX_CHECK: script.getAttribute("data-syntax-check-url"),
   SAVE_CHECKPOINT: script.getAttribute("data-save-checkpoint-url"),
-  GET_LAST_CHECKPOINT: script.getAttribute("data-get-last-checkpoint-url")
-}
+  GET_LAST_CHECKPOINT: script.getAttribute("data-get-last-checkpoint-url"),
+};
 
-const htmlIds ={
+const htmlIds = {
+  EDITOR: "editor",
   EDITOR_TABBAR_FILES: "editor-tabbar-files",
-  EDITOR: "editor-content",
+  EDITOR_TEXT: "editor-text",
   EDITOR_BTN_RENAME_FILE: "editor-tabbar-btn--rename",
   EDITOR_BTN_DELETE_FILE: "editor-tabbar-btn--delete",
   TOOLBAR_BTN_SAVE: "toolbar-btn--save",
@@ -27,12 +27,13 @@ const htmlIds ={
   TOOLBAR_BTN_SWITCH_TO_UPLOAD: "toolbar-switch-btn--manual",
   TOOLBAR_BTNS_RIGHT: "toolbar-buttons--right",
   TOOLBAR_DEADLINE: "toolbar-deadline",
+  MANUAL_UPLOAD: "manual-upload",
   MANUAL_UPLOAD_INPUT: "manual-upload-file-input",
   MANUAL_UPLOAD_FORM: "manual-upload-form",
   CONSOLE_CONTAINER: "console",
   CONSOLE_CONTENT: "console-content",
-  CONSOLE_HIDE_BUTTON: "console-btn--hide"
-}
+  CONSOLE_HIDE_BUTTON: "console-btn--hide",
+};
 
 const msgs = {
   try_again_later: "Please try again later.",
@@ -55,7 +56,7 @@ const msgs = {
   error_submit: "Submission failed.\n%message%",
   error_save_before_submit:
     "Submission failed. Could not save files before submitting.\n%message%",
-  error_unknown: "Unknown error"
+  error_unknown: "Unknown error",
 };
 
 const EMPTY_STRING_SHA1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
@@ -493,7 +494,7 @@ class InloopEditor {
    * @constructor
    */
   constructor() {
-    this.editor = ace.edit(htmlIds.EDITOR);
+    this.editor = ace.edit(htmlIds.EDITOR_TEXT);
     if (this.editor === undefined) {
       return;
     }
@@ -545,7 +546,7 @@ class InloopEditor {
   }
 
   focus() {
-    document.querySelector(`#${htmlIds.EDITOR} > textarea`).focus();
+    document.querySelector(`#${htmlIds.EDITOR_TEXT} > textarea`).focus();
   }
 }
 
@@ -893,9 +894,11 @@ class Toolbar {
     const isEditor = this.switchToEditorButton.disabled;
     this.switchToEditorButton.disabled = !isEditor;
     this.switchToUploadButton.disabled = isEditor;
-    document.getElementById("manual-upload").style.display = isEditor ? "flex" : "none";
-    document.getElementById("editor").style.display = isEditor ? "none" : "flex";
-    document.getElementById(htmlIds.TOOLBAR_BTNS_RIGHT).style.display = isEditor ? "none" : "block";
+    document.getElementById(htmlIds.MANUAL_UPLOAD).style.display = isEditor ? "flex" : "none";
+    document.getElementById(htmlIds.EDITOR).style.display = isEditor ? "none" : "flex";
+    document.getElementById(htmlIds.TOOLBAR_BTNS_RIGHT).style.display = isEditor
+      ? "none"
+      : "block";
     if (!isEditor) tabBar.editor.focus();
   }
 }
