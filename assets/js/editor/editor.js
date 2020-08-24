@@ -14,18 +14,18 @@ const NO_SUBMISSION_LIMIT = -1;
 const htmlIds ={
   EDITOR_TABBAR_FILES: "editor-tabbar-files",
   EDITOR: "editor-content",
-  BTN_SAVE: "toolbar-btn--save",
-  BTN_ADD_FILE: "toolbar-btn--newfile",
-  BTN_SUBMIT: "toolbar-btn--submit",
-  BTN_RENAME_FILE: "editor-tabbar-btn--rename",
-  BTN_DELETE_FILE: "editor-tabbar-btn--delete",
-  BTN_SYNTAX: "toolbar-btn--syntax",
-  BTN_SWITCH_TO_EDITOR: "toolbar-switch-btn--editor",
-  BTN_SWITCH_TO_UPLOAD: "toolbar-switch-btn--manual",
-  DEADLINE: "task-deadline",
+  EDITOR_BTN_RENAME_FILE: "editor-tabbar-btn--rename",
+  EDITOR_BTN_DELETE_FILE: "editor-tabbar-btn--delete",
+  TOOLBAR_BTN_SAVE: "toolbar-btn--save",
+  TOOLBAR_BTN_ADD_FILE: "toolbar-btn--newfile",
+  TOOLBAR_BTN_SUBMIT: "toolbar-btn--submit",
+  TOOLBAR_BTN_SYNTAX: "toolbar-btn--syntax",
+  TOOLBAR_BTN_SWITCH_TO_EDITOR: "toolbar-switch-btn--editor",
+  TOOLBAR_BTN_SWITCH_TO_UPLOAD: "toolbar-switch-btn--manual",
+  TOOLBAR_BTNS_RIGHT: "toolbar-buttons--right",
+  TOOLBAR_DEADLINE: "toolbar-deadline",
   MANUAL_UPLOAD_INPUT: "manual-upload-file-input",
   MANUAL_UPLOAD_FORM: "manual-upload-form",
-  TOOLBAR_BUTTONS_RIGHT: "toolbar-buttons--right",
   CONSOLE_CONTAINER: "console",
   CONSOLE_CONTENT: "console-content",
   CONSOLE_HIDE_BUTTON: "console-btn--hide"
@@ -290,8 +290,8 @@ class TabBar {
     this.editor.addOnChangeListener(function () {
       hashComparator.lookForChanges(fileBuilder.files);
     });
-    this.renameFileButton = document.getElementById(htmlIds.BTN_RENAME_FILE);
-    this.deleteFileButton = document.getElementById(htmlIds.BTN_DELETE_FILE);
+    this.renameFileButton = document.getElementById(htmlIds.EDITOR_BTN_RENAME_FILE);
+    this.deleteFileButton = document.getElementById(htmlIds.EDITOR_BTN_DELETE_FILE);
     this.renameFileButton.addEventListener("click", () => this.renameFile());
     this.deleteFileButton.addEventListener("click", () => this.deleteFile());
     for (let file of files) {
@@ -892,7 +892,7 @@ class Toolbar {
     this.switchToUploadButton.disabled = isEditor;
     document.getElementById("manual-upload").style.display = isEditor ? "flex" : "none";
     document.getElementById("editor").style.display = isEditor ? "none" : "flex";
-    document.getElementById(htmlIds.TOOLBAR_BUTTONS_RIGHT).style.display = isEditor ? "none" : "block";
+    document.getElementById(htmlIds.TOOLBAR_BTNS_RIGHT).style.display = isEditor ? "none" : "block";
     if (!isEditor) tabBar.editor.focus();
   }
 }
@@ -905,13 +905,13 @@ function init() {
     });
 
   toolbar = new Toolbar(
-    htmlIds.DEADLINE,
-    htmlIds.BTN_SAVE,
-    htmlIds.BTN_ADD_FILE,
-    htmlIds.BTN_SUBMIT,
-    htmlIds.BTN_SYNTAX,
-    htmlIds.BTN_SWITCH_TO_EDITOR,
-    htmlIds.BTN_SWITCH_TO_UPLOAD
+    htmlIds.TOOLBAR_DEADLINE,
+    htmlIds.TOOLBAR_BTN_SAVE,
+    htmlIds.TOOLBAR_BTN_ADD_FILE,
+    htmlIds.TOOLBAR_BTN_SUBMIT,
+    htmlIds.TOOLBAR_BTN_SYNTAX,
+    htmlIds.TOOLBAR_BTN_SWITCH_TO_EDITOR,
+    htmlIds.TOOLBAR_BTN_SWITCH_TO_UPLOAD
   );
   toolbar.init();
   communicator.getLastCheckpoint().then((data) => {

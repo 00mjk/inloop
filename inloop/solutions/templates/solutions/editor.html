@@ -23,7 +23,7 @@
   <div>
     <h1>{{ task.title }}</h1>
 {% if task.deadline %}
-    <time id="task-deadline" datetime="{{ task.deadline.isoformat }}"
+    <time id="toolbar-deadline" datetime="{{ task.deadline.isoformat }}"
           title="{{ task.deadline }}">{{ task.deadline }}</time>
 {% endif %}
   </div>
