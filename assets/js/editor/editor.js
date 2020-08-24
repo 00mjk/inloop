@@ -30,9 +30,9 @@ const htmlIds = {
   MANUAL_UPLOAD: "manual-upload",
   MANUAL_UPLOAD_INPUT: "manual-upload-file-input",
   MANUAL_UPLOAD_FORM: "manual-upload-form",
-  CONSOLE_CONTAINER: "console",
+  CONSOLE: "console",
   CONSOLE_CONTENT: "console-content",
-  CONSOLE_HIDE_BUTTON: "console-btn--hide",
+  CONSOLE_BTN_HIDE: "console-btn--hide",
 };
 
 const msgs = {
@@ -683,9 +683,9 @@ class Communicator {
 
 class SyntaxCheckConsole {
   constructor() {
-    this.consoleContainerElement = document.getElementById(htmlIds.CONSOLE_CONTAINER);
+    this.consoleContainerElement = document.getElementById(htmlIds.CONSOLE);
     this.consoleContentElement = document.getElementById(htmlIds.CONSOLE_CONTENT);
-    this.consoleHideBtn = document.getElementById(htmlIds.CONSOLE_HIDE_BUTTON);
+    this.consoleHideBtn = document.getElementById(htmlIds.CONSOLE_BTN_HIDE);
     this.consoleHideBtn.addEventListener("click", () => this.show(false));
   }
 
